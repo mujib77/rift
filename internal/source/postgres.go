@@ -45,7 +45,7 @@ func (p *PostgresSource) Connect(ctx context.Context) error {
 
 func (p *PostgresSource) Setup(ctx context.Context) error {
 	_, err := p.conn.Exec(ctx, fmt.Sprintf(
-		`CREATE PUBLICATION IF NOT EXISTS %s FOR ALL TABLES`,
+		`CREATE PUBLICATION %s FOR ALL TABLES`,
 		p.cfg.Publication,
 	)).ReadAll()
 	if err != nil {
