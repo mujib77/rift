@@ -1,0 +1,5 @@
+rift.yaml
+*.exe
+.env
+vendor/
+.vscode/
