@@ -151,12 +151,18 @@ func (e *Engine) drainQueue(ctx context.Context) {
 
 			if success {
 				fmt.Printf("  ✔ drained event [%s] %s\n", event.Operation, event.Table)
+				fmt.Printf("  [QUEUED→SENT] [%s] %s\n", event.Operation, event.Table)
 			}
 		}
 	}
 }
 
 func (e *Engine) sendToDestinations(ctx context.Context, event *source.Event) {
+	fmt.Printf("\n  [%s] table=%s lsn=%s\n",
+        event.Operation, event.Table, event.LSN)
+	for k, v := range event.Data {
+		fmt.Printf("   %s: %v\n", k, v)
+	}
 	for _, dest := range e.destinations {
 		err := dest.Send(ctx, event)
 		if err != nil {
