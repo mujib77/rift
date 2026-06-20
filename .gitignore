@@ -1,4 +1,6 @@
 rift.yaml
+rift-queue
+rift-queue.db
 *.exe
 .env
 vendor/
