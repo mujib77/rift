@@ -92,7 +92,10 @@ func (e *Engine) Start(ctx context.Context) error {
 				continue
 			}
 
-			fmt.Printf("  [%s] %s\n", event.Operation, event.Table)
+			fmt.Printf("\n  [%s] table=%s lsn=%s\n", event.Operation, event.Table, event.LSN)
+              for k, v := range event.Data {
+              fmt.Printf("    %s: %v\n", k, v)
+           }
 
 			if e.queue != nil {
 				err := e.queue.Push(event)
