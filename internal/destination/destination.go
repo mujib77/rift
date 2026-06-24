@@ -19,7 +19,13 @@ func New(cfg config.DestinationConfig) (Destination, error) {
 		return NewWebhook(cfg), nil
 	case "http":
 		return NewHTTP(cfg), nil
+	case "postgres":
+		dest := NewPostgres(cfg)
+		if err := dest.Connect(context.Background()); err != nil {
+			return nil, err
+		}
+		return dest, nil
 	default:
-		return nil, fmt.Errorf("unknown destination type: %s (supported: webhook, http)", cfg.Type)
+		return nil, fmt.Errorf("unknown destination type: %s", cfg.Type)
 	}
 }
