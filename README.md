@@ -1,7 +1,15 @@
-# Rift
+<p align="center">
+<img alt="License" src="https://img.shields.io/badge/license-MIT-22d3ee">
+<img alt="Version" src="https://img.shields.io/badge/version-v0.2.0-a78bfa">
+<img alt="Go" src="https://img.shields.io/badge/Go-1.26+-00ADD8">
+<img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-17+-336791">
+</p>
+
+# RIFT
 
 PostgreSQL CDC pipeline in a single Go binary.
 No Kafka. No JVM. No complexity.
+
 
 ---
 
