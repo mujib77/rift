@@ -3,17 +3,12 @@ source:
   url: postgres://user:password@localhost:5432/mydb
   slot: rift_slot
   publication: rift_pub
-  tables:
-    - public.users
-    - public.orders
 
 destinations:
   - name: webhook
     type: webhook
     url: https://myapp.com/webhook/changes
     headers:
-      Authorization: Bearer your-token-here
-      Content-Type: application/json
 
   - name: analytics-db
     type: postgres
