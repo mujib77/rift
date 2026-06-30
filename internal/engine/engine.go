@@ -10,6 +10,7 @@ import (
 	"github.com/mujib77/rift/internal/destination"
 	"github.com/mujib77/rift/internal/queue"
 	"github.com/mujib77/rift/internal/source"
+	"github.com/mujib77/rift/internal/filter"
 )
 
 type Engine struct {
@@ -17,6 +18,7 @@ type Engine struct {
 	source       *source.PostgresSource
 	destinations []destination.Destination
 	queue        *queue.Queue
+	filter *filter.Filter
 }
 
 func New(cfg *config.Config) (*Engine, error) {
@@ -46,6 +48,14 @@ func New(cfg *config.Config) (*Engine, error) {
 		eng.queue = q
 		fmt.Printf("  disk queue enabled: %s\n", cfg.Queue.Path)
 	}
+
+	if cfg.Filter.Script != "" {
+	f, err := filter.New(cfg.Filter.Script)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load filter: %w", err)
+	}
+	eng.filter = f
+}
 
 	return eng, nil
 }
@@ -91,6 +101,17 @@ func (e *Engine) Start(ctx context.Context) error {
 			if event == nil {
 				continue
 			}
+
+	if e.filter != nil {
+	allowed, err := e.filter.Allow(event)
+	if err != nil {
+		fmt.Println("  filter error:", err)
+	}
+	if !allowed {
+		fmt.Printf("  [FILTERED] %s %s\n", event.Operation, event.Table)
+		continue
+	}
+}
 
 			fmt.Printf("\n  [%s] table=%s lsn=%s\n", event.Operation, event.Table, event.LSN)
               for k, v := range event.Data {
