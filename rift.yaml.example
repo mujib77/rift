@@ -14,6 +14,10 @@ destinations:
     type: postgres
     url: postgres://user:password@analytics:5432/analytics
 
+  - name: cache
+    type: redis
+    url: redis://localhost:6379 
+
 queue:
   enabled: true
   path: ./rift-queue
