@@ -25,6 +25,10 @@ func New(cfg config.DestinationConfig) (Destination, error) {
 			return nil, err
 		}
 		return dest, nil
+
+	case "redis":
+    return NewRedis(cfg)
+	
 	default:
 		return nil, fmt.Errorf("unknown destination type: %s", cfg.Type)
 	}
